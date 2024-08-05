@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16.3-alpine3.20
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+      - POSTGRES_USER_FILE=/run/secrets/postgres_user
+      - POSTGRES_DB_FILE=/run/secrets/postgres_db
+      - TZ=Asia/Shanghai
+    secrets:
+      - postgres_password
+      - postgres_user
+      - postgres_db
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    ports:
+      - 5432:5432
+
+secrets:
+  postgres_password:
+    file: ./postgres_password.txt
+  postgres_user:
+    file: ./postgres_user.txt
+  postgres_db:
+    file: ./postgres_db.txt

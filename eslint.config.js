@@ -7,6 +7,16 @@ export default nuxt(
     {
       unocss: true,
       formatters: true,
+      ignores: [
+        'server/database/drizzle/meta/**',
+      ],
+      vue: {
+        overrides: {
+          'vue/component-name-in-template-casing': ['error', 'PascalCase', {
+            registeredComponentsOnly: false,
+          }],
+        },
+      },
     },
   ),
 )
