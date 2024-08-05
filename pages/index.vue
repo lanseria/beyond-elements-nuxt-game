@@ -3,20 +3,6 @@ import { appName } from '~/constants'
 
 const router = useRouter()
 
-const btnTextContent = ref(MAP_BASE_LAYER[0])
-
-function handleChangeLayer() {
-  const map = window.map
-  const previousBaseLayer = MAP_BASE_LAYER[storeCurrentBaseLayer.value]
-  map.setLayoutProperty(`${previousBaseLayer}-layer`, 'visibility', 'none')
-
-  storeCurrentBaseLayer.value = (storeCurrentBaseLayer.value + 1) % MAP_BASE_LAYER.length
-  const newBaseLayer = MAP_BASE_LAYER[storeCurrentBaseLayer.value]
-  map.setLayoutProperty(`${newBaseLayer}-layer`, 'visibility', 'visible')
-
-  const baseLayerName = newBaseLayer
-  btnTextContent.value = `${baseLayerName}`
-}
 globalFetchUserInfo(router)
 </script>
 
@@ -37,9 +23,7 @@ globalFetchUserInfo(router)
               {{ appName }}
             </div>
             <div v-else>
-              <AButton @click.stop="handleChangeLayer">
-                {{ btnTextContent }}
-              </AButton>
+              菜单
             </div>
           </div>
         </div>
