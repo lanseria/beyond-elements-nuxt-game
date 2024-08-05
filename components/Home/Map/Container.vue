@@ -7,6 +7,7 @@
       <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2">
         敌方
       </div>
+      <HomeBossCharacter class="absolute bottom-1/2 left-1/2 translate-y-1/2 transform -translate-x-1/2" />
     </div>
     <div class="h-1px w-full bg-gray-2" />
     <div class="relative flex-1">
