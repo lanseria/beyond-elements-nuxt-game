@@ -1,1 +1,0 @@
-ALTER TABLE "data_map_collection_schema"."map_tiles" ADD COLUMN "local_url" text;

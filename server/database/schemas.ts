@@ -4,9 +4,8 @@ import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 
 const NANO_ID_LENGTH = 21
-const ADOC_NANO_ID_LENGTH = 12
 
-export const nitroSchema = pgSchema('beyond-elements')
+export const nitroSchema = pgSchema('beyond_elements_schema')
 
 export const genders = nitroSchema.enum('genders', ['male', 'female'])
 export const roles = nitroSchema.enum('roles', ['admin', 'user'])
@@ -91,61 +90,6 @@ export const dictItems = nitroSchema.table('dict_items', {
   description: text('description'),
   createdAt: formattedTimestamp('created_at').notNull().default(sql`now()`),
   updatedAt: formattedTimestamp('updated_at').default(sql`now()`).$onUpdate(() => dayjs().unix()),
-})
-/**
- * 省级（省份、直辖市、自治区）
- */
-export const provinces = nitroSchema.table('provinces', {
-  code: varchar('code', {
-    length: ADOC_NANO_ID_LENGTH,
-  }).primaryKey().$defaultFn(() => nanoid(ADOC_NANO_ID_LENGTH)),
-  name: text('name').notNull(),
-})
-/**
- * 地级（城市）
- */
-export const cities = nitroSchema.table('cities', {
-  code: varchar('code', {
-    length: ADOC_NANO_ID_LENGTH,
-  }).primaryKey().$defaultFn(() => nanoid(ADOC_NANO_ID_LENGTH)),
-  name: text('name').notNull(),
-  provinceCode: text('province_code').notNull().references(() => provinces.code, { onDelete: 'cascade' }),
-})
-/**
- * 县级（区县）
- */
-export const areas = nitroSchema.table('areas', {
-  code: varchar('code', {
-    length: ADOC_NANO_ID_LENGTH,
-  }).primaryKey().$defaultFn(() => nanoid(ADOC_NANO_ID_LENGTH)),
-  name: text('name').notNull(),
-  cityCode: text('city_code').notNull().references(() => cities.code, { onDelete: 'cascade' }),
-  provinceCode: text('province_code').notNull().references(() => provinces.code, { onDelete: 'cascade' }),
-})
-/**
- * 乡级（乡镇、街道）
- */
-export const streets = nitroSchema.table('streets', {
-  code: varchar('code', {
-    length: ADOC_NANO_ID_LENGTH,
-  }).primaryKey().$defaultFn(() => nanoid(ADOC_NANO_ID_LENGTH)),
-  name: text('name').notNull(),
-  areaCode: text('area_code').notNull().references(() => areas.code, { onDelete: 'cascade' }),
-  cityCode: text('city_code').notNull().references(() => cities.code, { onDelete: 'cascade' }),
-  provinceCode: text('province_code').notNull().references(() => provinces.code, { onDelete: 'cascade' }),
-})
-/**
- * 村级（村委会、居委会）
- */
-export const villages = nitroSchema.table('villages', {
-  code: varchar('code', {
-    length: ADOC_NANO_ID_LENGTH,
-  }).primaryKey().$defaultFn(() => nanoid(ADOC_NANO_ID_LENGTH)),
-  name: text('name').notNull(),
-  streetCode: text('street_code').notNull().references(() => streets.code, { onDelete: 'cascade' }),
-  areaCode: text('area_code').notNull().references(() => areas.code, { onDelete: 'cascade' }),
-  cityCode: text('city_code').notNull().references(() => cities.code, { onDelete: 'cascade' }),
-  provinceCode: text('province_code').notNull().references(() => provinces.code, { onDelete: 'cascade' }),
 })
 /**
  * 用户关联
