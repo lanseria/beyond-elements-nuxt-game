@@ -1,10 +1,12 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const { characterObjects, initCharacter } = useCharacter()
+onMounted(() => {
+  initCharacter()
+})
+</script>
 
 <template>
-  <div class="grid grid-cols-2 gap-2">
-    <HomeCharacterCarbon />
-    <HomeCharacterGold />
-    <HomeCharacterIron />
-    <HomeCharacterOxygen />
+  <div class="flex gap-4">
+    <HomeCharacterOur v-for="(item, index) in characterObjects" :key="index" :character="item" />
   </div>
 </template>

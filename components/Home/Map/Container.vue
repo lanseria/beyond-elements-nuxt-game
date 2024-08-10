@@ -7,14 +7,25 @@
       <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2">
         敌方
       </div>
-      <HomeCharacterBoss class="absolute bottom-1/2 left-1/2 translate-y-1/2 transform -translate-x-1/2" />
+      <div class="h-200px w-full" />
+      <HomeBattlefieldEnemy class="flex justify-center" />
     </div>
     <div class="h-1px w-full bg-gray-2" />
     <div class="relative flex-1">
-      <div class="absolute left-1/2 top-0 transform -translate-x-1/2">
+      <div class="my-2 w-full flex justify-center">
         我方
       </div>
-      <HomeBattlefieldOur class="absolute bottom-1/2 left-1/2 translate-y-1/2 transform -translate-x-1/2" />
+      <HomeBattlefieldOur class="flex justify-center" />
+      <div class="my-2 h-1px w-full bg-gray-2" />
+      <div class="my-2 w-full flex justify-center">
+        卡片放置区
+      </div>
+      <HomeCardDropZone class="flex justify-center" />
+      <div class="my-2 h-1px w-full bg-gray-2" />
+      <div class="my-2 w-full flex justify-center">
+        手牌区
+      </div>
+      <HomeCardHandZone class="flex justify-center" />
     </div>
   </div>
 </template>
