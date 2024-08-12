@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+const { initStartCards } = useCard()
+onMounted(() => {
+  initStartCards()
+})
 </script>
 
 <template>

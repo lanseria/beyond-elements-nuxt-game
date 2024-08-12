@@ -1,10 +1,22 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const { dropCards, dropCardToHand } = useCard()
+</script>
 
 <template>
-  <div class="flex gap-4">
-    <div class="h-56px w-56px border" />
-    <div class="h-56px w-56px border" />
-    <div class="h-56px w-56px border" />
-    <div class="h-56px w-56px border" />
+  <div class="relative">
+    <div class="grid grid-cols-4 gap-4">
+      <div v-for="(item, index) in 4" :key="index" class="h-56px w-56px flex flex-col items-center justify-center border" />
+    </div>
+    <div class="absolute grid grid-cols-4 gap-4">
+      <div
+        v-for="(card, index) in dropCards"
+        :key="index"
+        class="h-56px w-56px flex flex-col items-center justify-center border"
+        @click="dropCardToHand(card)"
+      >
+        <div>{{ card.owner }}</div>
+        <div>{{ card.type }}</div>
+      </div>
+    </div>
   </div>
 </template>

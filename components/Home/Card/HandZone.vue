@@ -1,14 +1,19 @@
 <script lang="ts" setup>
-const { handCards, initRandomCards } = useCard()
-onMounted(() => {
-  initRandomCards()
-})
+const { handCards, drawCardToDrop } = useCard()
 </script>
 
 <template>
-  <div>
+  <div class="relative">
     <div class="grid grid-cols-4 gap-4">
-      <div v-for="(card, index) in handCards" :key="index" class="h-56px w-56px flex flex-col items-center justify-center border">
+      <div v-for="(item, index) in 8" :key="index" class="h-56px w-56px flex flex-col items-center justify-center border" />
+    </div>
+    <div class="absolute grid grid-cols-4 gap-4">
+      <div
+        v-for="(card, index) in handCards"
+        :key="index"
+        class="h-56px w-56px flex flex-col items-center justify-center border"
+        @click="drawCardToDrop(card)"
+      >
         <div>{{ card.owner }}</div>
         <div>{{ card.type }}</div>
       </div>
