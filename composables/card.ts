@@ -46,10 +46,11 @@ export function useCard() {
   // 一次生成32张卡片去卡片池
   function _initCards() {
     cardPool.value = generateCardPool()
+    handCards.value = []
   }
 
   // 随机从卡片池中选择8张卡片
-  function _initHandCards(count: number = 8) {
+  function pushHandCards(count: number = 8) {
     const selectedCards: Card[] = []
 
     while (selectedCards.length < count) {
@@ -58,7 +59,7 @@ export function useCard() {
       cardPool.value.splice(randomIndex, 1) // 防止重复选择相同卡片
     }
 
-    handCards.value = selectedCards
+    handCards.value.push(...selectedCards)
   }
 
   // 初始化
@@ -66,7 +67,7 @@ export function useCard() {
     // 初始化卡片池
     _initCards()
     // 随机从卡片池中选择8张卡片
-    _initHandCards()
+    pushHandCards()
     // 初始化发动牌库
     dropCards.value = []
   }
@@ -87,6 +88,11 @@ export function useCard() {
     dropCards.value.splice(dropCards.value.indexOf(card), 1)
     handCards.value.push(card)
   }
+  // 使用完发动牌库后，重新放入卡片池
+  function dropCardsToCardPool(card: Card) {
+    dropCards.value = dropCards.value.filter(item => item.id !== card.id)
+    cardPool.value.push(card)
+  }
 
   //
   return {
@@ -94,7 +100,9 @@ export function useCard() {
     dropCards,
 
     initStartCards,
+    pushHandCards,
     drawCardToDrop,
     dropCardToHand,
+    dropCardsToCardPool,
   }
 }

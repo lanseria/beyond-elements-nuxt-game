@@ -7,6 +7,6 @@ onMounted(() => {
 
 <template>
   <div class="flex gap-4">
-    <HomeCharacterOur v-for="(item, index) in characterObjects" :key="index" :character="item" />
+    <HomeCharacterOur v-for="(item, index) in characterObjects" :id="item.props.name" :key="index" :character="item" />
   </div>
 </template>

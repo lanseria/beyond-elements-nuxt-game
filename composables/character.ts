@@ -1,54 +1,60 @@
+import { nanoid } from 'nanoid'
 import { bosses, characters } from './const'
-
+// 定义角色属性的接口
+export interface CharacterProps {
+  /**
+   * 角色名字
+   */
+  name: string
+  /**
+   * 角色生命值
+   */
+  health: number
+  /**
+   * 角色攻击
+   */
+  attack: number
+  /**
+   * 角色防御
+   */
+  defense: number
+  /**
+   * 角色暴击率
+   */
+  critRate: number
+  /**
+   * 角色暴击伤害
+   */
+  critDamage: number
+  /**
+   * 角色韧性
+   */
+  toughness: number
+  /**
+   * 角色保护
+   */
+  protection: number
+  /**
+   * 角色增伤
+   */
+  damageIncrease: number
+  /**
+   * 角色减伤
+   */
+  damageReduction: number
+}
 export class Character {
-  public props: {
-    /**
-     * 角色名字
-     */
-    name: string
-    /**
-     * 角色生命值
-     */
-    health: number
-    /**
-     * 角色攻击
-     */
-    attack: number
-    /**
-     * 角色防御
-     */
-    defense: number
-    /**
-     * 角色暴击率
-     */
-    critRate: number
-    /**
-     * 角色暴击伤害
-     */
-    critDamage: number
-    /**
-     * 角色韧性
-     */
-    toughness: number
-    /**
-     * 角色保护
-     */
-    protection: number
-    /**
-     * 角色增伤
-     */
-    damageIncrease: number
-    /**
-     * 角色减伤
-     */
-    damageReduction: number
-  }
+  public id: string
+  public props: CharacterProps
+  public currentState: CharacterProps
 
   imageUrl: string
 
   // 构造函数用于创建角色实例
-  constructor(props: { name: string, health: number, attack: number, defense: number, critRate: number, critDamage: number, toughness: number, protection: number, damageIncrease: number, damageReduction: number }, imageUrl: string) {
+  constructor(props: CharacterProps, imageUrl: string) {
+    this.id = nanoid()
     this.props = props
+    this.currentState = { ...props } // 将 props 的值复制给 currentState
     this.imageUrl = imageUrl
   }
 }
@@ -61,8 +67,8 @@ function getRandomValue(base: number, variation: number): number {
 }
 
 export function useCharacter() {
-  const characterObjects = ref<Character[]>([])
-  const bossObjects = ref<Character[]>([])
+  const characterObjects = useLocalStorage<Character[]>('characterObjects', [])
+  const bossObjects = useLocalStorage<Character[]>('bossObjects', [])
   function initCharacter() {
     characterObjects.value = characters.map(character => new Character({
       name: character.name,
@@ -91,11 +97,28 @@ export function useCharacter() {
       damageReduction: getRandomValue(boss.damageReduction, 5), // 减伤上下浮动 5
     }, boss.imageUrl))
   }
+  /**
+   * 角色受到攻击
+   * @param id 角色ID
+   * @param attack 攻击力
+   */
+  function receiveAttack(id: string, attack: number) {
+    const allCharacter = [...characterObjects.value, ...bossObjects.value]
+    const characterIdx = allCharacter.findIndex(character => character.id === id)
+    if (characterIdx === -1) {
+      throw new Error('未找到角色')
+    }
+    const character = allCharacter[characterIdx]
+    // 计算伤害
+    const damage = attack
+    character.currentState.health -= damage
+  }
   return {
     characterObjects,
     bossObjects,
 
     initCharacter,
     initBoss,
+    receiveAttack,
   }
 }
