@@ -68,3 +68,7 @@ export const characters = [
     damageReduction: 0,
   },
 ]
+// 手牌最大数量
+export const maxHandCards = 8
+// 卡片发动区最大数量
+export const maxDropCards = 4

@@ -73,6 +73,11 @@ export function useCard() {
 
   // 从手牌中拿出一张卡片到发动牌库
   function drawCardToDrop(card: Card) {
+    // 先判断发动牌库是否已满
+    if (dropCards.value.length >= maxDropCards) {
+      Message.warning('发动牌库已满，无法继续')
+      return
+    }
     handCards.value.splice(handCards.value.indexOf(card), 1)
     dropCards.value.push(card)
   }

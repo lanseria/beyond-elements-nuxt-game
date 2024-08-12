@@ -5,7 +5,7 @@ const { handCards, drawCardToDrop } = useCard()
 <template>
   <div class="relative">
     <div class="grid grid-cols-4 gap-4">
-      <div v-for="(item, index) in 8" :key="index" class="h-56px w-56px flex flex-col items-center justify-center border" />
+      <div v-for="(item, index) in maxHandCards" :key="index" class="h-56px w-56px flex flex-col items-center justify-center border" />
     </div>
     <div class="absolute grid grid-cols-4 gap-4">
       <div
