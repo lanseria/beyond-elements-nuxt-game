@@ -35,7 +35,7 @@ export const users = nitroSchema.table('users', {
   gender: genders('gender').default('male'),
   role: roles('role').default('user'),
   createdAt: formattedTimestamp('created_at').notNull().default(sql`now()`),
-  updatedAt: formattedTimestamp('updated_at').default(sql`now()`).$onUpdate(() => dayjs().unix()),
+  updatedAt: formattedTimestamp('updated_at').notNull().default(sql`now()`).$onUpdate(() => dayjs().unix()),
 })
 /**
  * 登录记录
@@ -74,7 +74,7 @@ export const dicts = nitroSchema.table('dicts', {
   label: text('label').notNull(),
   value: text('value').notNull(),
   createdAt: formattedTimestamp('created_at').notNull().default(sql`now()`),
-  updatedAt: formattedTimestamp('updated_at').default(sql`now()`).$onUpdate(() => dayjs().unix()),
+  updatedAt: formattedTimestamp('updated_at').notNull().default(sql`now()`).$onUpdate(() => dayjs().unix()),
 })
 /**
  * 字典项
@@ -89,7 +89,17 @@ export const dictItems = nitroSchema.table('dict_items', {
   sort: integer('sort').notNull().default(0),
   description: text('description'),
   createdAt: formattedTimestamp('created_at').notNull().default(sql`now()`),
-  updatedAt: formattedTimestamp('updated_at').default(sql`now()`).$onUpdate(() => dayjs().unix()),
+  updatedAt: formattedTimestamp('updated_at').notNull().default(sql`now()`).$onUpdate(() => dayjs().unix()),
+})
+
+export const gameRecords = nitroSchema.table('game_records', {
+  id: varchar('id', {
+    length: NANO_ID_LENGTH,
+  }).primaryKey().$defaultFn(() => nanoid(NANO_ID_LENGTH)),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  data: jsonb('data').notNull(),
+  createdAt: formattedTimestamp('created_at').notNull().default(sql`now()`),
+  updatedAt: formattedTimestamp('updated_at').notNull().default(sql`now()`).$onUpdate(() => dayjs().unix()),
 })
 /**
  * 用户关联

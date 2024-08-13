@@ -1,9 +1,48 @@
 <script setup lang="ts">
+import type { Character } from '~/composables/character'
+import type { Card } from '~/composables/card'
 import { appName } from '~/constants'
 
 const router = useRouter()
+const characterObjects = useLocalStorage<Character[]>('characterObjects', [])
+const bossObjects = useLocalStorage<Character[]>('bossObjects', [])
+// 卡片池
+const cardPool = useLocalStorage<Card[]>('cardPool', [])
+// 手牌
+const handCards = useLocalStorage<Card[]>('handCards', [])
+// 发动牌库
+const dropCards = useLocalStorage<Card[]>('dropCards', [])
 
 globalFetchUserInfo(router)
+async function onSaveGame() {
+  const saveData = {
+    characterObjects: characterObjects.value,
+    bossObjects: bossObjects.value,
+    cardPool: cardPool.value,
+    handCards: handCards.value,
+    dropCards: dropCards.value,
+  }
+  const { code, msg } = await saveGameRecord({ data: saveData })
+  if (code) {
+    Message.warning(msg)
+  }
+  else {
+    Message.success('保存成功')
+  }
+}
+async function onReadGame() {
+  const { code, msg, data } = await readGameRecord()
+  if (code) {
+    Message.warning(msg)
+  }
+  else {
+    characterObjects.value = data.data.characterObjects
+    bossObjects.value = data.data.bossObjects
+    cardPool.value = data.data.cardPool
+    handCards.value = data.data.handCards
+    dropCards.value = data.data.dropCards
+  }
+}
 </script>
 
 <template>
@@ -22,8 +61,19 @@ globalFetchUserInfo(router)
             <div v-if="!storeMenubar">
               {{ appName }}
             </div>
-            <div v-else>
-              菜单
+            <div v-else class="flex">
+              <ALink @click="onSaveGame()">
+                <template #icon>
+                  <IconSave />
+                </template>
+                保存
+              </ALink>
+              <ALink @click="onReadGame()">
+                <template #icon>
+                  <IconRecord />
+                </template>
+                读取
+              </ALink>
             </div>
           </div>
         </div>

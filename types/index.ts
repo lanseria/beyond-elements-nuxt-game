@@ -174,3 +174,8 @@ export interface VillagesRecord {
   cityCode: string
   provinceCode: string
 }
+
+export interface GameRecordData {
+  userId: string
+  data: any
+}

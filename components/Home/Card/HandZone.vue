@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { handCards, drawCardToDrop } = useCard()
+const { handCards, handleClickHandCard } = useCard()
 </script>
 
 <template>
@@ -12,7 +12,7 @@ const { handCards, drawCardToDrop } = useCard()
         v-for="(card, index) in handCards"
         :key="index"
         class="h-56px w-56px flex flex-col items-center justify-center border"
-        @click="drawCardToDrop(card)"
+        @click="handleClickHandCard(card)"
       >
         <div>{{ card.owner }}</div>
         <div>{{ card.type }}</div>

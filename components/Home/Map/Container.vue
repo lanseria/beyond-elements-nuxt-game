@@ -2,6 +2,8 @@
 const {
   isAttack,
   isAutoAttack,
+  duration,
+  isGameOver,
 
   cardPool,
   dropCards,
@@ -15,7 +17,14 @@ const {
 
   initGame,
 } = useCard()
-
+const marks = {
+  10: '10ms',
+  100: '100ms',
+  200: '200ms',
+  300: '300ms',
+  400: '400ms',
+  500: '500ms',
+}
 onMounted(() => {
   initStartCards()
   if (attackCanvas.value) {
@@ -68,6 +77,14 @@ onMounted(() => {
           重置
         </AButton>
       </div>
+      <div class="my-2 h-1px w-full bg-gray-2" />
+
+      <div class="flex justify-center">
+        <div class="w-90%">
+          <ASlider v-model:model-value="duration" :step="5" :min="10" :max="500" class="w-full" :marks="marks" />
+        </div>
+      </div>
     </div>
+    <HomeMapModal :is-visible="isGameOver" @close="initGame" />
   </div>
 </template>

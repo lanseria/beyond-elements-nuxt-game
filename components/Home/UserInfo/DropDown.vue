@@ -2,6 +2,7 @@
 import type { OnClickOutsideHandler } from '@vueuse/core'
 import { vOnClickOutside } from '@vueuse/components'
 
+const router = useRouter()
 const UserInfoFormModalRef = shallowRef()
 const dropdown = ref(false)
 const dropdownHandler: OnClickOutsideHandler = () => {
@@ -15,13 +16,13 @@ const dropdownHandler: OnClickOutsideHandler = () => {
       <img :src="storeUserInfo.avatar" class="h-24px w-24px">
     </div>
     <ul v-if="dropdown" v-on-click-outside="dropdownHandler" class="dropdown-menu">
-      <li v-if="storeUserInfo.role === 'admin'" @click="globalDashboardHandler($router)">
+      <li v-if="storeUserInfo.role === 'admin'" @click="globalDashboardHandler(router)">
         管理端
       </li>
       <li @click="UserInfoFormModalRef.open()">
         个人信息
       </li>
-      <li @click="globalLogoutHandler($router)">
+      <li @click="globalLogoutHandler(router)">
         退出
       </li>
     </ul>

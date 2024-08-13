@@ -2,6 +2,8 @@ import { createHash } from 'node:crypto'
 import { encrypt } from 'paseto-ts/v4'
 import { eq } from 'drizzle-orm'
 import { omit } from 'lodash-es'
+import type { Payload } from 'paseto-ts/lib/types'
+import dayjs from 'dayjs'
 import { loginRecords } from '~/server/database/schemas'
 
 export default defineEventHandler(async (event) => {
@@ -41,7 +43,9 @@ export default defineEventHandler(async (event) => {
   })
   const localKey = await useStorage('files').getItem('localKey') as string
   // 用 lodash-es 中的 omit 移除 password
-  const payload = omit(user, 'password')
+  const payload: Payload = omit(user, 'password')
+  // 设置过期时间
+  payload.exp = dayjs().add(7, 'day').toISOString()
   const token = await encrypt(
     localKey,
     payload,
