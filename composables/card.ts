@@ -46,7 +46,6 @@ export function useCard() {
   // 一次生成32张卡片去卡片池
   function _initCards() {
     cardPool.value = generateCardPool()
-    handCards.value = []
   }
 
   // 随机从卡片池中选择8张卡片
@@ -65,7 +64,11 @@ export function useCard() {
   // 初始化
   function initStartCards() {
     // 初始化卡片池
-    _initCards()
+    if (cardPool.value.length === 0) {
+      _initCards()
+    }
+    // 清空手牌
+    handCards.value = []
     // 随机从卡片池中选择8张卡片
     pushHandCards()
     // 初始化发动牌库
@@ -105,6 +108,7 @@ export function useCard() {
 
   //
   return {
+    cardPool,
     handCards,
     dropCards,
 

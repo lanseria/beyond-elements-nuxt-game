@@ -4,6 +4,7 @@ import {
   presetIcons,
   presetTypography,
   presetUno,
+  presetWebFonts,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
@@ -28,6 +29,13 @@ export default defineConfig({
       scale: 1.2,
     }),
     presetTypography(),
+    presetWebFonts({
+      provider: 'google',
+      fonts: {
+        sans: 'Roboto',
+        mono: ['Fira Code', 'Fira Mono:400,700'],
+      },
+    }),
   ],
   transformers: [
     transformerDirectives(),

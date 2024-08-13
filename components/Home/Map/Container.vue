@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 const {
+  cardPool,
   handCards,
   dropCards,
+
   initStartCards,
   pushHandCards,
   dropCardsToCardPool,
@@ -39,7 +41,7 @@ function drawLine(start: { x: number, y: number }, end: { x: number, y: number }
     const canvas = attackCanvas.value
     const ctx = canvas.getContext('2d')
 
-    const duration = 500 // 动画持续时间 500ms
+    const duration = 200 // 动画持续时间 500ms
     const startTime = performance.now()
 
     function animate(time: number) {
@@ -101,14 +103,16 @@ async function startAttack() {
     }
     for await (const boss of bossObjects.value) {
       const boss1 = getCenter(`#${boss.props.name}`)
+      // 在 characterObjects 过滤出可攻击的角色，也就是血量不为0
+      const canAttackCharacterObjects = characterObjects.value.filter(character => character.currentState.health > 0)
       // 在 characterObjects 随机挑选一位
-      const characterIdx = Math.floor(Math.random() * characterObjects.value.length)
-      const character = characterObjects.value[characterIdx]
-      const our = getCenter(`#${character.props.name}`)
+      const canAttackCharacterIdx = Math.floor(Math.random() * canAttackCharacterObjects.length)
+      const canAttackCharacter = canAttackCharacterObjects[canAttackCharacterIdx]
+      const our = getCenter(`#${canAttackCharacter.props.name}`)
       await drawLine(boss1, our)
       // 计算角色攻击力
       const attack = boss.currentState.attack
-      receiveAttack(character.id, attack)
+      receiveAttack(canAttackCharacter.id, attack)
     }
   }
   catch (error) {
@@ -162,7 +166,7 @@ onMounted(() => {
       <HomeCardDropZone class="flex justify-center" />
       <div class="my-2 h-1px w-full bg-gray-2" />
       <div class="my-2 w-full flex justify-center">
-        手牌区
+        手牌区[卡片池*{{ cardPool.length }}]
       </div>
       <HomeCardHandZone class="flex justify-center" />
       <div class="my-2 h-1px w-full bg-gray-2" />

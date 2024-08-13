@@ -22,7 +22,7 @@ const healthPercentage = computed(() => {
     <!-- 血条容器 -->
     <div class="relative h-4 w-full overflow-hidden bg-gray-4">
       <!-- 显示当前血量数值 -->
-      <div class="absolute left-1/2 text-8px text-white leading-4 -translate-x-1/2">
+      <div class="absolute left-1/2 text-3 text-white leading-4 font-mono -translate-x-1/2">
         {{ character.currentState.health }}/{{ character.props.health }}
       </div>
       <!-- 血条 -->
@@ -31,7 +31,7 @@ const healthPercentage = computed(() => {
         :style="{ width: `${healthPercentage}%` }"
       />
     </div>
-    <img class="h-80px w-80px" :src="character.imageUrl">
+    <img class="h-96px w-96px" :src="character.imageUrl">
     <HomeCharacterModal :character="character.currentState" :is-visible="isVisible" @close="isVisible = false" />
   </div>
 </template>

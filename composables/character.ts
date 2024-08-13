@@ -72,6 +72,9 @@ export function useCharacter() {
   const bossObjects = useLocalStorage<Character[]>('bossObjects', [])
 
   function initCharacter() {
+    if (characterObjects.value.length > 0) {
+      return
+    }
     characterObjects.value = characters.map(character => new Character({
       name: character.name,
       health: getRandomValue(character.health, 500), // 生命值上下浮动 500
@@ -86,6 +89,9 @@ export function useCharacter() {
     }, character.imageUrl))
   }
   function initBoss() {
+    if (bossObjects.value.length > 0) {
+      return
+    }
     bossObjects.value = bosses.map(boss => new Character({
       name: boss.name,
       health: getRandomValue(boss.health, 500), // 生命值上下浮动 500
@@ -128,7 +134,15 @@ export function useCharacter() {
     }
 
     // 将计算后的伤害从角色的当前生命值中减去
-    character.currentState.health = +new BigNumber(character.currentState.health).minus(damage).toNumber().toFixed(0)
+    // 首先判断角色是否已经死亡
+    if (character.currentState.health <= 0) {
+      throw new Error('角色已经死亡')
+    }
+    // 计算伤害后，更新角色的当前生命值
+    const remainingHealth = new BigNumber(character.currentState.health).minus(damage)
+
+    // 如果剩余生命值小于 0，将其设置为 0，否则保留计算后的值
+    character.currentState.health = remainingHealth.isLessThan(0) ? 0 : +remainingHealth.toFixed(0)
   }
   return {
     characterObjects,
