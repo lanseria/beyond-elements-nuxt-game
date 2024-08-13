@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid'
+import BigNumber from 'bignumber.js'
 import { bosses, characters } from './const'
 // 定义角色属性的接口
 export interface CharacterProps {
@@ -69,6 +70,7 @@ function getRandomValue(base: number, variation: number): number {
 export function useCharacter() {
   const characterObjects = useLocalStorage<Character[]>('characterObjects', [])
   const bossObjects = useLocalStorage<Character[]>('bossObjects', [])
+
   function initCharacter() {
     characterObjects.value = characters.map(character => new Character({
       name: character.name,
@@ -102,16 +104,31 @@ export function useCharacter() {
    * @param id 角色ID
    * @param attack 攻击力
    */
-  function receiveAttack(id: string, attack: number) {
+  function receiveAttack(id: string, value: number) {
     const allCharacter = [...characterObjects.value, ...bossObjects.value]
     const characterIdx = allCharacter.findIndex(character => character.id === id)
     if (characterIdx === -1) {
       throw new Error('未找到角色')
     }
     const character = allCharacter[characterIdx]
+
+    // 假设 attack 和 character.currentState.defense 是 number 类型
+    const attack = new BigNumber(value)
+    const defense = new BigNumber(character.currentState.defense)
+
     // 计算伤害
-    const damage = attack
-    character.currentState.health -= damage
+    let damage = attack.minus(defense)
+
+    // 计算最低伤害，确保伤害不低于攻击力的5%
+    const minDamage = attack.multipliedBy(0.05)
+
+    // 如果伤害低于最低伤害，将其设为最低伤害
+    if (damage.isLessThan(minDamage)) {
+      damage = minDamage
+    }
+
+    // 将计算后的伤害从角色的当前生命值中减去
+    character.currentState.health = +new BigNumber(character.currentState.health).minus(damage).toNumber().toFixed(0)
   }
   return {
     characterObjects,

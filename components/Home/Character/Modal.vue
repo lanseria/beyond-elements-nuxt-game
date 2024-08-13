@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue'
 import type { CharacterProps } from '~/composables/character'
 
 const props = defineProps<{ character: CharacterProps, isVisible: boolean, onClose: () => void }>()

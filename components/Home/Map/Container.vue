@@ -5,6 +5,7 @@ const {
   initStartCards,
   pushHandCards,
   dropCardsToCardPool,
+  autoDrawCardToDrop,
 } = useCard()
 
 const {
@@ -14,6 +15,8 @@ const {
   receiveAttack,
 }
 = useCharacter()
+const isAttack = ref(false)
+const isAutoAttack = ref(false)
 const attackCanvas = shallowRef<HTMLCanvasElement>()
 function getCenter(selector: string) {
   const element = document.querySelector(selector)
@@ -77,6 +80,7 @@ function drawLine(start: { x: number, y: number }, end: { x: number, y: number }
 }
 
 async function startAttack() {
+  isAttack.value = true
   try {
     for await (const item of dropCards.value) {
       const our = getCenter(`#${item.owner}`)
@@ -111,6 +115,21 @@ async function startAttack() {
     console.error(error)
   }
   pushHandCards(maxHandCards - handCards.value.length)
+  isAttack.value = false
+}
+
+async function autoAttack() {
+  // 自动攻击
+  isAutoAttack.value = true
+  while (isAutoAttack.value) {
+    autoDrawCardToDrop()
+    await startAttack()
+  }
+}
+
+function stopAutoAttack() {
+  // 停止自动攻击
+  isAutoAttack.value = false
 }
 onMounted(() => {
   initStartCards()
@@ -147,12 +166,18 @@ onMounted(() => {
       </div>
       <HomeCardHandZone class="flex justify-center" />
       <div class="my-2 h-1px w-full bg-gray-2" />
-      <div class="flex justify-center">
-        <AButton type="primary" :disabled="dropCards.length !== 4" @click="startAttack">
+      <div class="flex justify-center gap-2">
+        <AButton type="primary" :disabled="dropCards.length === 0 || isAttack" @click="startAttack">
           <template #icon>
             <IconDoubleUp />
           </template>
           发动
+        </AButton>
+        <AButton v-if="!isAutoAttack" type="primary" status="success" @click="autoAttack">
+          自动攻击
+        </AButton>
+        <AButton v-else type="primary" status="warning" @click="stopAutoAttack">
+          停止自动攻击
         </AButton>
       </div>
     </div>

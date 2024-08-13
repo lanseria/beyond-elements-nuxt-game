@@ -93,6 +93,15 @@ export function useCard() {
     dropCards.value = dropCards.value.filter(item => item.id !== card.id)
     cardPool.value.push(card)
   }
+  // 自动从手牌中收取4张卡片到发动牌库
+  function autoDrawCardToDrop() {
+    for (let i = 0; i < 4; i++) {
+      if (handCards.value.length === 0) {
+        break
+      }
+      drawCardToDrop(handCards.value[0])
+    }
+  }
 
   //
   return {
@@ -104,5 +113,6 @@ export function useCard() {
     drawCardToDrop,
     dropCardToHand,
     dropCardsToCardPool,
+    autoDrawCardToDrop,
   }
 }
