@@ -71,39 +71,37 @@ export function useCharacter() {
   const characterObjects = useLocalStorage<Character[]>('characterObjects', [])
   const bossObjects = useLocalStorage<Character[]>('bossObjects', [])
 
-  function initCharacter() {
-    if (characterObjects.value.length > 0) {
-      return
+  function initCharacter(force = false) {
+    if (force || characterObjects.value.length === 0) {
+      characterObjects.value = characters.map(character => new Character({
+        name: character.name,
+        health: getRandomValue(character.health, 500), // 生命值上下浮动 500
+        attack: getRandomValue(character.attack, 50), // 攻击力上下浮动 50
+        defense: getRandomValue(character.defense, 30), // 防御力上下浮动 30
+        critRate: getRandomValue(character.critRate, 0.1), // 暴击率上下浮动 0.1
+        critDamage: getRandomValue(character.critDamage, 0.1), // 暴击伤害上下浮动 0.1
+        toughness: getRandomValue(character.toughness, 0.1), // 韧性上下浮动 0.1
+        protection: getRandomValue(character.protection, 10), // 保护上下浮动 10
+        damageIncrease: getRandomValue(character.damageIncrease, 5), // 增伤上下浮动 5
+        damageReduction: getRandomValue(character.damageReduction, 5), // 减伤上下浮动 5
+      }, character.imageUrl))
     }
-    characterObjects.value = characters.map(character => new Character({
-      name: character.name,
-      health: getRandomValue(character.health, 500), // 生命值上下浮动 500
-      attack: getRandomValue(character.attack, 50), // 攻击力上下浮动 50
-      defense: getRandomValue(character.defense, 30), // 防御力上下浮动 30
-      critRate: getRandomValue(character.critRate, 0.1), // 暴击率上下浮动 0.1
-      critDamage: getRandomValue(character.critDamage, 0.1), // 暴击伤害上下浮动 0.1
-      toughness: getRandomValue(character.toughness, 0.1), // 韧性上下浮动 0.1
-      protection: getRandomValue(character.protection, 10), // 保护上下浮动 10
-      damageIncrease: getRandomValue(character.damageIncrease, 5), // 增伤上下浮动 5
-      damageReduction: getRandomValue(character.damageReduction, 5), // 减伤上下浮动 5
-    }, character.imageUrl))
   }
-  function initBoss() {
-    if (bossObjects.value.length > 0) {
-      return
+  function initBoss(force = false) {
+    if (force || bossObjects.value.length === 0) {
+      bossObjects.value = bosses.map(boss => new Character({
+        name: boss.name,
+        health: getRandomValue(boss.health, 500), // 生命值上下浮动 500
+        attack: getRandomValue(boss.attack, 50), // 攻击力上下浮动 50
+        defense: getRandomValue(boss.defense, 30), // 防御力上下浮动 30
+        critRate: getRandomValue(boss.critRate, 0.1), // 暴击率上下浮动 0.1
+        critDamage: getRandomValue(boss.critDamage, 0.1), // 暴击伤害上下浮动 0.1
+        toughness: getRandomValue(boss.toughness, 0.1), // 韧性上下浮动 0.1
+        protection: getRandomValue(boss.protection, 10), // 保护上下浮动 10
+        damageIncrease: getRandomValue(boss.damageIncrease, 5), // 增伤上下浮动 5
+        damageReduction: getRandomValue(boss.damageReduction, 5), // 减伤上下浮动 5
+      }, boss.imageUrl))
     }
-    bossObjects.value = bosses.map(boss => new Character({
-      name: boss.name,
-      health: getRandomValue(boss.health, 500), // 生命值上下浮动 500
-      attack: getRandomValue(boss.attack, 50), // 攻击力上下浮动 50
-      defense: getRandomValue(boss.defense, 30), // 防御力上下浮动 30
-      critRate: getRandomValue(boss.critRate, 0.1), // 暴击率上下浮动 0.1
-      critDamage: getRandomValue(boss.critDamage, 0.1), // 暴击伤害上下浮动 0.1
-      toughness: getRandomValue(boss.toughness, 0.1), // 韧性上下浮动 0.1
-      protection: getRandomValue(boss.protection, 10), // 保护上下浮动 10
-      damageIncrease: getRandomValue(boss.damageIncrease, 5), // 增伤上下浮动 5
-      damageReduction: getRandomValue(boss.damageReduction, 5), // 减伤上下浮动 5
-    }, boss.imageUrl))
   }
   /**
    * 角色受到攻击
