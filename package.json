@@ -30,7 +30,7 @@
     "@vueuse/nuxt": "^10.11.1",
     "@xmldom/xmldom": "^0.8.10",
     "arco-design-nuxt-module": "^0.1.0",
-    "axios": "^1.7.3",
+    "axios": "^1.7.4",
     "bignumber.js": "^9.1.2",
     "csv-parse": "^5.5.6",
     "dayjs-nuxt": "^2.1.9",
