@@ -23,6 +23,32 @@ export default defineNuxtConfig({
       'composables/**',
     ],
   },
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@arco-design/web-vue/es/icon',
+        '@arco-design/web-vue/es/link/index',
+        '@arco-design/web-vue/es/link/style/css.js',
+        '@arco-design/web-vue/es/message/style/css.js',
+        '@arco-design/web-vue/es',
+        '@arco-design/web-vue/es/button/index',
+        '@arco-design/web-vue/es/slider/index',
+        '@arco-design/web-vue/es/button/style/css.js',
+        '@arco-design/web-vue/es/slider/style/css.js',
+        '@arco-design/web-vue/es/modal/style/css.js',
+        '@arco-design/web-vue/es/input/index',
+        '@arco-design/web-vue/es/form/index',
+        '@arco-design/web-vue/es/modal/index',
+        '@arco-design/web-vue/es/input/style/css.js',
+        '@arco-design/web-vue/es/form/style/css.js',
+        'nanoid',
+        'bignumber.js',
+        '@arco-design/web-vue/es/image/index',
+        '@arco-design/web-vue/es/image/style/css.js',
+        '@arco-design/web-vue',
+      ],
+    },
+  },
   experimental: {
     // when using generate, payload js assets included in sw precache manifest
     // but missing on offline, disabling extraction it until fixed

@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { setStoreMenubar, storeIsLogin, storeMenubar } from '#imports'
 import type { Character } from '~/composables/character'
 import type { Card } from '~/composables/card'
 import { appName } from '~/constants'
 
-const router = useRouter()
+// const router = useRouter()
 const characterObjects = useLocalStorage<Character[]>('characterObjects', [])
 const bossObjects = useLocalStorage<Character[]>('bossObjects', [])
 // 卡片池
@@ -13,7 +14,7 @@ const handCards = useLocalStorage<Card[]>('handCards', [])
 // 发动牌库
 const dropCards = useLocalStorage<Card[]>('dropCards', [])
 
-globalFetchUserInfo(router)
+// globalFetchUserInfo(router)
 async function onSaveGame() {
   const saveData = {
     characterObjects: characterObjects.value,
@@ -47,7 +48,7 @@ async function onReadGame() {
 
 <template>
   <div class="h-screen w-screen flex flex-col">
-    <div v-if="storeIsLogin" class="relative flex flex-y-hidden">
+    <div class="relative flex flex-y-hidden">
       <HomeMapContainer />
       <div class="absolute left-12px top-12px">
         <div class="cursor-pointer rounded bg-white p-8px hover:bg-gray-1" @click="setStoreMenubar(!storeMenubar)">
@@ -61,7 +62,7 @@ async function onReadGame() {
             <div v-if="!storeMenubar">
               {{ appName }}
             </div>
-            <div v-else class="flex">
+            <!-- <div v-else class="flex">
               <ALink @click="onSaveGame()">
                 <template #icon>
                   <IconSave />
@@ -74,12 +75,12 @@ async function onReadGame() {
                 </template>
                 读取
               </ALink>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
       <div class="absolute right-12px top-12px">
-        <HomeUserInfoDropDown />
+        <!-- <HomeUserInfoDropDown /> -->
       </div>
     </div>
   </div>
