@@ -119,10 +119,10 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    'nitro:config': (nitroConfig) => {
-      if (!nitroConfig.runtimeConfig?.dbUrl)
-        throw new Error('Please set DB_URL in .env file')
-    },
+    // 'nitro:config': (nitroConfig) => {
+    //   if (!nitroConfig.runtimeConfig?.dbUrl)
+    //     throw new Error('Please set DB_URL in .env file')
+    // },
   },
   compatibilityDate: '2024-07-04',
 })
